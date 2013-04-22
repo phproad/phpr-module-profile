@@ -52,12 +52,17 @@ class Profile_User extends Phpr_Extension {
 
 	public function get_avatar($size='100', $default=null)
 	{
-		if ($this->model->avatar->count==0)
-			return $default;
-
 		$size = Phpr_String::dimension_from_string($size);
 
-		return $this->model->avatar[0]->getThumbnailPath($size['width'], $size['height'], true, array('mode'=>'crop'));
+		if ($this->model->avatar->count > 0) {
+			return $this->model->avatar[0]->getThumbnailPath($size['width'], $size['height'], true, array('mode'=>'crop'));			
+		}
+		else {
+			return "//www.gravatar.com/avatar/"
+				. md5(strtolower(trim($this->model->email)))
+				. "?d=".urlencode($default)
+				. "&s=".$size['width'];
+		}
 	}
 
 	public function delete_avatar()
