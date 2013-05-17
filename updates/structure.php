@@ -7,7 +7,6 @@ $table = Db_Structure::table('profile_friends');
 	$table->column('mutual', db_bool);
 	$table->footprints(false);
 	$table->column('deleted_at', db_datetime);
-	$table->save();
 
 $table = Db_Structure::table('profile_wall');
 	$table->primary_key('id');
@@ -15,4 +14,3 @@ $table = Db_Structure::table('profile_wall');
 	$table->column('user_id', db_number)->index();
 	$table->column('message', db_text);
 	$table->footprints(false);
-	$table->save();
