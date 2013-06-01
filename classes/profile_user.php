@@ -1,20 +1,24 @@
 <?php
 
-class Profile_User extends Phpr_Extension {
+class Profile_User extends Phpr_Extension 
+{
 	
 	private $model;
 	
-	public function __construct($model) {
+	public function __construct($model) 
+	{
 		parent::__construct();
 		
 		$this->model = $model;
 	}
 
-	public function eval_total_friends() {
+	public function eval_total_friends() 
+	{
 		return $this->model->total_following + $this->model->total_followers - $this->model->total_mutual;
 	}
 
-	public function eval_age() {
+	public function eval_age() 
+	{
 		$age = null;
 
 		if ($dob = $this->model->dob)
@@ -25,10 +29,11 @@ class Profile_User extends Phpr_Extension {
 			$days = Phpr_DateTime::now()->substract_datetime($dob)->get_days();
 			$age = floor($days / 365);
 		}
-		return 42;
+		return $age;
 	}
 
-	public function eval_location_string() {
+	public function eval_location_string() 
+	{
 		$str = '';
 		
 		if ($this->model->city)
@@ -80,7 +85,8 @@ class Profile_User extends Phpr_Extension {
 	// Points and XP
 	// 
 
-	public function refresh_stats() {
+	public function refresh_stats() 
+	{
 		$this->model->xp_level = Profile_Points::xp_get_level($this->model->xp_points);
 		$this->model->xp_progress = Profile_Points::xp_get_progress($this->model->xp_points);        
 	}
@@ -88,12 +94,14 @@ class Profile_User extends Phpr_Extension {
 	// Friendship
 	// 
 
-	public function is_following($user_id, $return=false) {
+	public function is_following($user_id, $return=false) 
+	{
 		$friendship = Profile_Friend::create()->where('follower_id=?', $this->model->id)->where('leader_id=?', $user_id)->where('deleted_at is null');
 		return ($return) ? $friendship->find() : $friendship->requestRowCount();
 	}   
 
-	public function befriend($user, $unfollow=false) {
+	public function befriend($user, $unfollow=false) 
+	{
 		$friendship = Profile_Friend::create()->where('follower_id=?', $this->model->id)->where('leader_id=?', $user->id)->find();
 		if (!$friendship)
 			$friendship = Profile_Friend::create();
@@ -112,7 +120,8 @@ class Profile_User extends Phpr_Extension {
 		return $friendship;
 	}
 
-	public function get_friends() {
+	public function get_friends() 
+	{
 		$friends = User::create()->join('profile_friends', 'users.id=leader_id OR users.id=follower_id');
 		$friends->where('profile_friends.deleted_at is null');
 		$friends->where('(users.id=leader_id AND follower_id=:id) OR (users.id=follower_id AND leader_id=:id)', array('id'=>$this->model->id));
@@ -121,7 +130,8 @@ class Profile_User extends Phpr_Extension {
 		return $friends;
 	}
 
-	public function get_followers() {
+	public function get_followers() 
+	{
 		$friends = User::create()->join('profile_friends', 'users.id=follower_id');
 		$friends->where('profile_friends.deleted_at is null');
 		$friends->where('profile_friends.leader_id=?', $this->model->id);
@@ -129,7 +139,8 @@ class Profile_User extends Phpr_Extension {
 		return $friends;
 	}
 
-	public function get_following() {
+	public function get_following() 
+	{
 		$friends = User::create()->join('profile_friends', 'users.id=leader_id');
 		$friends->where('profile_friends.deleted_at is null');
 		$friends->where('profile_friends.follower_id=?', $this->model->id);
