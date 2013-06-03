@@ -63,6 +63,14 @@ class Profile_User extends Phpr_Extension
 			return $this->model->avatar[0]->get_thumbnail_path($size['width'], $size['height'], true, array('mode'=>'crop'));			
 		}
 		else {
+
+			if (substr($default, 0, 2) != '//' && strtolower(substr($default, 0, 4)) != 'http') {
+				if ($default{0} == '/')
+					$default = substr($default, 1);
+
+				$default = Phpr::$request->get_root_url() . '/' . $default;
+			}
+
 			return "//www.gravatar.com/avatar/"
 				. md5(strtolower(trim($this->model->email)))
 				. "?d=".urlencode($default)
