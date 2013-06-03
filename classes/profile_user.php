@@ -60,7 +60,7 @@ class Profile_User extends Phpr_Extension
 		$size = Phpr_String::dimension_from_string($size);
 
 		if ($this->model->avatar->count > 0) {
-			return $this->model->avatar[0]->getThumbnailPath($size['width'], $size['height'], true, array('mode'=>'crop'));			
+			return $this->model->avatar[0]->get_thumbnail_path($size['width'], $size['height'], true, array('mode'=>'crop'));			
 		}
 		else {
 			return "//www.gravatar.com/avatar/"
