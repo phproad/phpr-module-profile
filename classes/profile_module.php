@@ -9,8 +9,8 @@ class Profile_Module extends Core_Module_Base
 		return new Core_Module_Detail(
 			"User Profile",
 			"Adds more robust feature to the User module",
-			"Scripts Ahoy!",
-			"http://scriptsahoy.com/"
+			"PHPRoad",
+			"http://phproad.com/"
 		);
 	}
 
