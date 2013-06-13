@@ -105,7 +105,7 @@ class Profile_User extends Phpr_Extension
 	public function is_following($user_id, $return=false) 
 	{
 		$friendship = Profile_Friend::create()->where('follower_id=?', $this->model->id)->where('leader_id=?', $user_id)->where('deleted_at is null');
-		return ($return) ? $friendship->find() : $friendship->requestRowCount();
+		return ($return) ? $friendship->find() : $friendship->get_row_count();
 	}   
 
 	public function befriend($user, $unfollow=false) 
